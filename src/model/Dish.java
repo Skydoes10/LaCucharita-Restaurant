@@ -1,34 +1,39 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Dish implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private boolean amount;
-	private String unit;
+	private List<Ingredient> ingredients;
+	private List<Boolean> amounts;
+	private int price;
 	
-	public Dish(String name, boolean amount, String unit) {
+	public Dish(String name, int price) {
 		this.name = name;
-		this.amount = amount;
-		this.unit = unit;
+		ingredients = new ArrayList<>();
+		amounts = new ArrayList<>();
+		this.price = price;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public boolean isAmount() {
-		return amount;
+	public List<Ingredient> getIngredients() {
+		return ingredients;
 	}
 
-	public String getUnit() {
-		return unit;
+	public List<Boolean> getAmounts() {
+		return amounts;
 	}
 
-	public void setAmount(boolean amount) {
-		this.amount = amount;
+	public int getPrice() {
+		return price;
 	}
+	
 	
 	
 }

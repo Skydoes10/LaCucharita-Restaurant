@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order implements Serializable{
@@ -10,11 +11,11 @@ public class Order implements Serializable{
 	private String date;
 	private List<Dish> dishes;
 	
-	public Order(String code, String status, String date, List<Dish> dishes) {
+	public Order(String code, String status, String date) {
 		this.code = code;
 		this.status = status;
 		this.date = date;
-		this.dishes = dishes;
+		dishes = new ArrayList<>();
 	}
 
 	public String getCode() {
