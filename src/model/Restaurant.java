@@ -55,12 +55,15 @@ public class Restaurant {
 		saveEmployees();
 	}
 	
-	public void findEmployee(String numID) throws FileNotFoundException, IOException {
+	public Employee findEmployee(String numID) {
+		Employee employee = null;
 		for(int i=0; i<employees.size(); i++) {
 			if(employees.get(i).getNumID().equals(numID)) {
-				deleteEmployee(employees.get(i));
+				employee = employees.get(i);
+//				deleteEmployee(employees.get(i));
 			}
 		}
+		return employee;
 	}
 	
 	public void changePassword(String newPw) {

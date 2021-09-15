@@ -3,11 +3,11 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+<TableView fx:id="tvOrdersList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
   <columns>
-    <TableColumn prefWidth="112.0" text="Código" />
-    <TableColumn prefWidth="274.0" text="Platillos" />
-      <TableColumn prefWidth="103.0" text="Estado" />
-      <TableColumn prefWidth="110.0" text="Fecha" />
+    <TableColumn fx:id="tcCodeOrder" prefWidth="112.0" text="Código" />
+    <TableColumn fx:id="tcDishes" prefWidth="274.0" text="Platillos" />
+      <TableColumn fx:id="tcStatusDish" prefWidth="103.0" text="Estado" />
+      <TableColumn fx:id="tcDateOrder" prefWidth="110.0" text="Fecha" />
   </columns>
 </TableView>

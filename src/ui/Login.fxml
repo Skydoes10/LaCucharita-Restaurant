@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="403.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="111.0" layoutY="35.0" text="INICIAR SESIÓN">
@@ -15,9 +14,9 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <TextField layoutX="127.0" layoutY="124.0" />
-      <PasswordField layoutX="127.0" layoutY="192.0" />
-      <Button layoutX="167.0" layoutY="243.0" mnemonicParsing="false" style="-fx-background-color: #36a1ff;" text="ENTRAR" textFill="WHITE">
+      <TextField fx:id="tfIDLoginEmp" layoutX="127.0" layoutY="124.0" />
+      <PasswordField fx:id="pfPassLoginEmp" layoutX="127.0" layoutY="192.0" />
+      <Button layoutX="167.0" layoutY="243.0" mnemonicParsing="false" onAction="#login" style="-fx-background-color: #36a1ff;" text="ENTRAR" textFill="WHITE">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
