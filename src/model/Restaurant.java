@@ -27,6 +27,22 @@ public class Restaurant {
 		orders = new ArrayList<>();
 	}
 	
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public List<Dish> getDishes() {
+		return dishes;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
 	// Employee
 	public void addEmployee(String name, String numID, String bDay, String pw) throws FileNotFoundException, IOException {
 		Employee employee = new Employee(name, numID, bDay, pw);

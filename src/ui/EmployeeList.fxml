@@ -3,10 +3,10 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="473.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+<TableView fx:id="tvEmployee" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="473.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
   <columns>
-    <TableColumn prefWidth="199.0" text="Nombre" />
-    <TableColumn prefWidth="137.0" text="Cédula" />
-      <TableColumn prefWidth="136.0" text="Fecha de Nacimiento" />
+    <TableColumn fx:id="tcName" prefWidth="199.0" text="Nombre" />
+    <TableColumn fx:id="tcNumID" prefWidth="137.0" text="Cédula" />
+      <TableColumn fx:id="tcBDay" prefWidth="136.0" text="Fecha de Nacimiento" />
   </columns>
 </TableView>
