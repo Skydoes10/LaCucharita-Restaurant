@@ -71,7 +71,7 @@ public class Restaurant {
 	}
 	
 	// Ingredient
-	public void addIngredient(String name, boolean amount, String unit) throws FileNotFoundException, IOException {
+	public void addIngredient(String name, double amount, String unit) throws FileNotFoundException, IOException {
 		Ingredient ingredient = new Ingredient(name, amount, unit);
 		ingredients.add(ingredient);
 		saveIngredient();
@@ -82,12 +82,15 @@ public class Restaurant {
 		saveIngredient();
 	}
 	
-	public void findIngredient(String name) throws FileNotFoundException, IOException {
+	public Ingredient findIngredient(String name) {
+		Ingredient ingredient = null;
 		for(int i=0; i<ingredients.size(); i++) {
 			if(ingredients.get(i).getName().equals(name)) {
-				deleteIngredient(ingredients.get(i));
+				ingredient = ingredients.get(i);
+//				deleteIngredient(ingredients.get(i));
 			}
 		}
+		return ingredient;
 	}
 	
 	public void changeAmount(boolean newAmount) {

@@ -80,6 +80,25 @@ public class RestaurantGUI {
 
     @FXML
     private PasswordField pfChangePassOld;
+    
+    // Add Ingredient
+    @FXML
+    private AnchorPane apAddIngredient;
+
+    @FXML
+    private TextField tfNameIngredient;
+
+    @FXML
+    private TextField tfAmountIngr;
+
+    @FXML
+    private Button btnAddIngr;
+
+    @FXML
+    private TextField tfUnitIngr;
+    
+    
+    
 	
 	// TableView Employee
 	@FXML
@@ -221,6 +240,41 @@ public class RestaurantGUI {
     private void changePassword(ActionEvent event) {
 		
     }
+	
+	
+	@FXML
+	private void AddIngredient(ActionEvent event) throws FileNotFoundException, IOException {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Añadir ingrediente");
+		if(!(tfNameIngredient.getText().equals("") || tfAmountIngr.getText().equals("") || tfUnitIngr.getText().equals(""))) {
+			if(restaurant.getIngredients().isEmpty()){
+				double amount = Double.parseDouble(tfAmountIngr.getText());
+				restaurant.addIngredient(tfNameIngredient.getText(), amount, tfUnitIngr.getText());
+				alert.setContentText("Ingrediente añadido exitosamente");
+				alert.showAndWait();
+				
+				Stage stage2 = (Stage) this.btnAddIngr.getScene().getWindow();
+		        stage2.close();
+			}else {
+				if(restaurant.findIngredient(tfNameIngredient.getText()) != null) {
+					alert.setContentText("El ingrediente ya habia sido añadido antes");
+					alert.showAndWait();
+				}else {
+					double amount = Double.parseDouble(tfAmountIngr.getText());
+					restaurant.addIngredient(tfNameIngredient.getText(), amount, tfUnitIngr.getText());
+					alert.setContentText("Ingrediente añadido exitosamente");
+					alert.showAndWait();
+					
+					Stage stage2 = (Stage) this.btnAddIngr.getScene().getWindow();
+			        stage2.close();
+				}
+			}
+		}else {
+			alert.setContentText("Por favor llene todos los campos");
+			alert.showAndWait();
+		}
+    }
+	
 	
 	@FXML
 	private void viewEmployeeInfo(ActionEvent event) throws IOException {
