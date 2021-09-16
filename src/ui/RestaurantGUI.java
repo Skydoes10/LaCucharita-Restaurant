@@ -17,10 +17,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.Dish;
 import model.Employee;
 import model.Ingredient;
@@ -41,7 +43,7 @@ public class RestaurantGUI {
     private AnchorPane modulesPane;
 
     @FXML
-    private AnchorPane viewListPane;
+    private BorderPane viewListPane;
 
     @FXML
     private AnchorPane optionsPane;
@@ -54,6 +56,9 @@ public class RestaurantGUI {
     private PasswordField pfPassLoginEmp;
 	
 	// Register Employee
+    @FXML
+    private AnchorPane apRegisterEmp;
+    
 	@FXML
 	private TextField tfNameEmployee;
 
@@ -65,6 +70,16 @@ public class RestaurantGUI {
 
 	@FXML
 	private DatePicker dpBDay;
+	
+	@FXML
+    private Button btnRegister;
+	
+	// Change Password
+	@FXML
+    private PasswordField pfChangePassNew;
+
+    @FXML
+    private PasswordField pfChangePassOld;
 	
 	// TableView Employee
 	@FXML
@@ -130,9 +145,9 @@ public class RestaurantGUI {
 	@FXML
 	public void login(ActionEvent event) throws IOException {
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Login");
+		alert.setTitle("Iniciar Sesión");
 		if(tfIDLoginEmp.getText().equals("") || pfPassLoginEmp.getText().equals("")){
-			alert.setContentText("Please complete all fields");
+			alert.setContentText("Por favor llene todos los campos");
 			alert.showAndWait();
 		}else {
 			if(restaurant.findEmployee(tfIDEmployee.getText()) != null && pfPassLoginEmp.getText().equals(restaurant.findEmployee(tfIDEmployee.getText()).getPassword())) {
@@ -140,11 +155,12 @@ public class RestaurantGUI {
 			fxmlLoader.setController(this);
 			Parent mainPane = fxmlLoader.load();
 
-			bpMainPane.getChildren().clear();
-			bpMainPane.setCenter(mainPane);
-			
+			Stage stage = new Stage();
+	        stage.setTitle("La Cucharita");
+	        stage.setScene(new Scene(mainPane));  
+	        stage.show();
 			}else {
-			alert.setContentText("User not registered");
+			alert.setContentText("Usuario no registrado");
 			alert.showAndWait();
 			}
 		}
@@ -153,31 +169,98 @@ public class RestaurantGUI {
 	@FXML
     private void registerEmployee(ActionEvent event) throws FileNotFoundException, IOException {
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Register Employee");
+		alert.setTitle("Registrar empleado");
 		if(!(tfNameEmployee.getText().equals("") || tfIDEmployee.getText().equals("") || dpBDay.getValue().toString().equals("") || pfPassEmployee.getText().equals(""))) {
 			if(restaurant.getEmployees().isEmpty()){
 				restaurant.addEmployee(tfNameEmployee.getText(), tfIDEmployee.getText(), dpBDay.getValue().toString(), pfPassEmployee.getText());
-				alert.setContentText("Successfully registered employee");
+				alert.setContentText("Empleado registrado exitosamente");
 				alert.showAndWait();
-				initializeTableViewEmployee();
+				
+				Stage stage2 = (Stage) this.btnRegister.getScene().getWindow();
+		        stage2.close();
+		        
+				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPane.fxml"));
+				fxmlLoader.setController(this);
+				Parent mainPane = fxmlLoader.load();
+
+				Stage stage = new Stage();
+		        stage.setTitle("La Cucharita");
+		        stage.setScene(new Scene(mainPane));  
+		        stage.show();
+		        
 			}else {
 				if(restaurant.findEmployee(tfIDEmployee.getText()) != null) {
-					alert.setContentText("The employee had already been registered before");
+					alert.setContentText("El empleado ya habia sido registrado antes");
 					alert.showAndWait();
 				}else {
 					restaurant.addEmployee(tfNameEmployee.getText(), tfIDEmployee.getText(), dpBDay.getValue().toString(), pfPassEmployee.getText());
-					alert.setContentText("Successfully registered employee");
+					alert.setContentText("Empleado registrado exitosamente");
 					alert.showAndWait();
-					initializeTableViewEmployee();
+					
+					Stage stage2 = (Stage) this.btnRegister.getScene().getWindow();
+			        stage2.close();
+					
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPane.fxml"));
+					fxmlLoader.setController(this);
+					Parent mainPane = fxmlLoader.load();
+
+					Stage stage = new Stage();
+			        stage.setTitle("La Cucharita");
+			        stage.setScene(new Scene(mainPane));  
+			        stage.show();
+			        
 				}
 			}
 		}else {
-			alert.setContentText("Please complete all fields");
+			alert.setContentText("Por favor llene todos los campos");
 			alert.showAndWait();
 		}
     }
 	
+	@FXML
+    private void changePassword(ActionEvent event) {
+		
+    }
 	
+	@FXML
+	private void viewEmployeeInfo(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EmployeeList.fxml"));
+    	fxmlLoader.setController(this);
+    	Parent EmpListPane = fxmlLoader.load();
+    
+    	viewListPane.setCenter(EmpListPane);
+		initializeTableViewEmployee();
+    }
+
+    @FXML
+    private void viewInventoryInfo(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InventoryList.fxml"));
+    	fxmlLoader.setController(this);
+    	Parent EmpListPane = fxmlLoader.load();
+    
+    	viewListPane.setCenter(EmpListPane);
+    	initializeTableViewIngredient();
+    }
+
+    @FXML
+    private void viewMenuInfo(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MenuList.fxml"));
+    	fxmlLoader.setController(this);
+    	Parent EmpListPane = fxmlLoader.load();
+    
+    	viewListPane.setCenter(EmpListPane);
+    	initializeTableViewMenu();
+    }
+
+    @FXML
+    private void viewOrdersInfo(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderList.fxml"));
+    	fxmlLoader.setController(this);
+    	Parent EmpListPane = fxmlLoader.load();
+    
+    	viewListPane.setCenter(EmpListPane);
+    	initializeTableViewOrder();
+    }
 	
 	private void initializeTableViewEmployee() {
 		ObservableList<Employee> observableList;

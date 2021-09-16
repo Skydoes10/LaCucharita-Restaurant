@@ -10,14 +10,14 @@ import model.Restaurant;
 public class Main extends Application{
 	private RestaurantGUI restaurantGUI;
 	private Restaurant restaurant;
-
-	public static void main(String[] args) {
-		launch(args);
-	}
 	
 	public Main() {
 		restaurant = new Restaurant();
 		restaurantGUI = new RestaurantGUI(restaurant);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 	@Override
@@ -31,7 +31,6 @@ public class Main extends Application{
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Registrar Empleado");
 			primaryStage.show();
-			
 		}else {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
 			fxmlLoader.setController(restaurantGUI);
