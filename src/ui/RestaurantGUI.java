@@ -161,6 +161,7 @@ public class RestaurantGUI {
 		 restaurant = rt;    	
 	}
 	
+	// Employee
 	@FXML
 	public void login(ActionEvent event) throws IOException {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -241,7 +242,7 @@ public class RestaurantGUI {
 		
     }
 	
-	
+	// Ingredient
 	@FXML
 	private void AddIngredient(ActionEvent event) throws FileNotFoundException, IOException {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -275,7 +276,7 @@ public class RestaurantGUI {
 		}
     }
 	
-	
+	// View Info
 	@FXML
 	private void viewEmployeeInfo(ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EmployeeList.fxml"));
@@ -315,7 +316,8 @@ public class RestaurantGUI {
     	viewListPane.setCenter(EmpListPane);
     	initializeTableViewOrder();
     }
-	
+    
+    // Tables
 	private void initializeTableViewEmployee() {
 		ObservableList<Employee> observableList;
    		observableList = FXCollections.observableArrayList(restaurant.getEmployees());
@@ -356,6 +358,7 @@ public class RestaurantGUI {
    		tcStatusDish.setCellValueFactory(new PropertyValueFactory<Order, String>("status"));
    		tcDateOrder.setCellValueFactory(new PropertyValueFactory<Order, String>("date"));
 	}
+	
 	
 	
 	

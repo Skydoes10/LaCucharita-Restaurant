@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Restaurant {
@@ -47,11 +48,13 @@ public class Restaurant {
 	public void addEmployee(String name, String numID, String bDay, String pw) throws FileNotFoundException, IOException {
 		Employee employee = new Employee(name, numID, bDay, pw);
 		employees.add(employee);
+		sortByNameEmployee();
 		saveEmployees();
 	}
 	
 	private void deleteEmployee(Employee e) throws FileNotFoundException, IOException {
 		employees.remove(e);
+		sortByNameEmployee();
 		saveEmployees();
 	}
 	
@@ -74,11 +77,13 @@ public class Restaurant {
 	public void addIngredient(String name, double amount, String unit) throws FileNotFoundException, IOException {
 		Ingredient ingredient = new Ingredient(name, amount, unit);
 		ingredients.add(ingredient);
+		sortByNameIngr();
 		saveIngredient();
 	}
 	
 	private void deleteIngredient(Ingredient i) throws FileNotFoundException, IOException {
 		ingredients.remove(i);
+		sortByNameIngr();
 		saveIngredient();
 	}
 	
@@ -101,20 +106,25 @@ public class Restaurant {
 	public void addDish(String name, int price) throws FileNotFoundException, IOException {
 		Dish dish = new Dish(name, price);
 		dishes.add(dish);
+		sortByNameDish();
 		saveDish();
 	}
 	
 	private void deleteDish(Dish d) throws FileNotFoundException, IOException {
 		dishes.remove(d);
+		sortByNameDish();
 		saveDish();
 	}
 	
-	public void findDish(String name) throws FileNotFoundException, IOException {
+	public Dish findDish(String name) {
+		Dish dish = null;
 		for(int i=0; i<dishes.size(); i++) {
 			if(dishes.get(i).getName().equals(name)) {
-				deleteDish(dishes.get(i));
+				dish = dishes.get(i);
+//				deleteDish(dishes.get(i));
 			}
 		}
+		return dish;
 	}
 	
 	// Order
@@ -129,14 +139,14 @@ public class Restaurant {
 		saveOrder();
 	}
 	
-	public boolean findOrder(String code) {
-		boolean found = false;
+	public Order findOrder(String code) {
+		Order order = null;
 		for(int i=0; i<orders.size(); i++) {
 			if(orders.get(i).getCode().equals(code)) {
-				found = true;
+				order = orders.get(i);
 			}
 		}
-		return found;
+		return order;
 	}
 	
 	public void changeStatus(String code, String newStatus) {
@@ -206,5 +216,42 @@ public class Restaurant {
 			ois.close();
 		}
 	}
+	
+	// Sort
+	private void sortByNameEmployee() {
+		int j;
+		Employee aux;
+		
+		for(int i = 1; i < employees.size(); i++) {
+			aux = employees.get(i);
+			j = i-1;
+			while((j >= 0) && (aux.compareByName(employees.get(j)) < 0)) {
+				employees.set(j+1, employees.get(j));
+				j--;
+			}
+			employees.set(j+1, aux);
+		}
+	}
+	
+	private void sortByNameIngr() {
+	    for (int i = 0; i < ingredients.size(); i++) {
+	        for (int j = 0; j < ingredients.size(); j++) {
+	            if(ingredients.get(i).getName().compareTo(ingredients.get(j).getName()) < 0) {
+	                Ingredient aux = ingredients.get(i);
+	                ingredients.set(i, ingredients.get(j));
+	                ingredients.set(j, aux);
+	            }
+	        }
+	    }
+	}
+	
+	public void sortByNameDish() {
+		Collections.sort(dishes);
+	}
+	
+	//
+	// pendiente el sort de order
+	//
+	
 	
 }

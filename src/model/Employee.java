@@ -36,5 +36,8 @@ public class Employee implements Serializable{
 		this.password = password;
 	}
 	
+	public int compareByName(Employee otherEmployee) {
+		return name.compareTo(otherEmployee.getName());
+	}
 	
 }
