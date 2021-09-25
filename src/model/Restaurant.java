@@ -52,7 +52,7 @@ public class Restaurant {
 		saveEmployees();
 	}
 	
-	private void deleteEmployee(Employee e) throws FileNotFoundException, IOException {
+	public void deleteEmployee(Employee e) throws FileNotFoundException, IOException {
 		employees.remove(e);
 		sortByNameEmployee();
 		saveEmployees();
@@ -81,7 +81,7 @@ public class Restaurant {
 		saveIngredient();
 	}
 	
-	private void deleteIngredient(Ingredient i) throws FileNotFoundException, IOException {
+	public void deleteIngredient(Ingredient i) throws FileNotFoundException, IOException {
 		ingredients.remove(i);
 		sortByNameIngr();
 		saveIngredient();
@@ -110,7 +110,7 @@ public class Restaurant {
 		saveDish();
 	}
 	
-	private void deleteDish(Dish d) throws FileNotFoundException, IOException {
+	public void deleteDish(Dish d) throws FileNotFoundException, IOException {
 		dishes.remove(d);
 		sortByNameDish();
 		saveDish();

@@ -50,12 +50,19 @@ public class RestaurantGUI {
     private BorderPane viewListPane;
 
     @FXML
-    private AnchorPane optionsPane;
+    private BorderPane optionsPane;
     
     // Options Employee
     @FXML
     private AnchorPane apOptionsEmp;
-
+    
+    // Options Ingredient
+    @FXML
+    private AnchorPane apOptionsing;
+    
+	// Options Dish
+    
+    // Options Order
     
 	
 	// Login Employee
@@ -84,12 +91,21 @@ public class RestaurantGUI {
 	@FXML
     private Button btnRegister;
 	
+	// Delete Employee
+	@FXML
+    private TextField tfNumIdDelete;
+
+    @FXML
+    private Button btnDeleteEmp;
+
 	// Change Password
 	@FXML
     private PasswordField pfChangePassNew;
 
     @FXML
     private PasswordField pfChangePassOld;
+    
+    
     
     // Add Ingredient
     @FXML
@@ -106,6 +122,13 @@ public class RestaurantGUI {
 
     @FXML
     private TextField tfUnitIngr;
+    
+    // Delete Ingredient
+    @FXML
+    private TextField tfNameIngDelete;
+
+    @FXML
+    private Button btnDeleteIng;
     
     // Add Menu
     @FXML
@@ -281,6 +304,45 @@ public class RestaurantGUI {
     }
 	
 	@FXML
+	private void addNewEmp(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterEmployee.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+
+    @FXML
+    private void deleteEmp(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("deleteEmployee.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+    
+    @FXML
+    private void deleteEmployee(ActionEvent event) throws FileNotFoundException, IOException {
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Eliminar empleado");
+    	if(restaurant.findEmployee(tfNumIdDelete.getText()) != null) {
+    		restaurant.deleteEmployee(restaurant.findEmployee(tfNumIdDelete.getText()));
+    		alert.setContentText("Empleado eliminado exitosamente");
+			alert.showAndWait();
+			
+			Stage stage2 = (Stage) this.btnDeleteEmp.getScene().getWindow();
+	        stage2.close();
+    	}else {
+    		alert.setContentText("Empleado no encontrado");
+			alert.showAndWait();
+    	}
+    }
+
+	@FXML
     private void registerEmployee(ActionEvent event) throws FileNotFoundException, IOException {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Registrar empleado");
@@ -314,14 +376,14 @@ public class RestaurantGUI {
 					Stage stage2 = (Stage) this.btnRegister.getScene().getWindow();
 			        stage2.close();
 					
-					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPane.fxml"));
-					fxmlLoader.setController(this);
-					Parent mainPane = fxmlLoader.load();
-
-					Stage stage = new Stage();
-			        stage.setTitle("La Cucharita");
-			        stage.setScene(new Scene(mainPane));  
-			        stage.show();
+//					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPane.fxml"));
+//					fxmlLoader.setController(this);
+//					Parent mainPane = fxmlLoader.load();
+//
+//					Stage stage = new Stage();
+//			        stage.setTitle("La Cucharita");
+//			        stage.setScene(new Scene(mainPane));  
+//			        stage.show();
 			        
 				}
 			}
@@ -337,6 +399,45 @@ public class RestaurantGUI {
     }
 	
 	// Ingredient
+	@FXML
+	private void addNewIng(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddIngredient.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+
+    @FXML
+    private void deleteIng(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("deleteIngredient.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+    
+    @FXML
+    private void deleteIngredient(ActionEvent event) throws FileNotFoundException, IOException {
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Eliminar ingredient");
+    	if(restaurant.findIngredient(tfNameIngDelete.getText()) != null) {
+    		restaurant.deleteIngredient(restaurant.findIngredient(tfNameIngDelete.getText()));
+    		alert.setContentText("Ingredient eliminado exitosamente");
+			alert.showAndWait();
+			
+			Stage stage2 = (Stage) this.btnDeleteIng.getScene().getWindow();
+	        stage2.close();
+    	}else {
+    		alert.setContentText("Ingredient no encontrado");
+			alert.showAndWait();
+    	}
+    }
+	
 	@FXML
 	private void AddIngredient(ActionEvent event) throws FileNotFoundException, IOException {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -485,13 +586,12 @@ public class RestaurantGUI {
     	Parent EmpListPane = fxmlLoader.load();
     
     	viewListPane.setCenter(EmpListPane);
-		initializeTableViewEmployee();
 		
 		FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("optionsEmp.fxml"));
     	fxmlLoader1.setController(this);
-    	Parent EmpListPane1 = fxmlLoader1.load();
+    	Parent optionsEmpPane = fxmlLoader1.load();
     
-    	viewListPane.setCenter(EmpListPane1);
+    	optionsPane.setTop(optionsEmpPane);
 		initializeTableViewEmployee();
     }
 
@@ -502,6 +602,12 @@ public class RestaurantGUI {
     	Parent EmpListPane = fxmlLoader.load();
     
     	viewListPane.setCenter(EmpListPane);
+    	
+    	FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("optionsIngredient.fxml"));
+    	fxmlLoader1.setController(this);
+    	Parent optionsEmpPane = fxmlLoader1.load();
+    
+    	optionsPane.setTop(optionsEmpPane);
     	initializeTableViewIngredient();
     }
 

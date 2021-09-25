@@ -91,7 +91,10 @@
                         <BorderPane fx:id="viewListPane" prefHeight="753.0" prefWidth="758.0" />
                      </content>
                   </ScrollPane>
-                  <AnchorPane fx:id="optionsPane" />
+                  <AnchorPane>
+                     <children>
+                        <BorderPane fx:id="optionsPane" layoutX="-6.0" layoutY="-3.0" prefHeight="755.0" prefWidth="327.0" />
+                     </children></AnchorPane>
                </items>
             </SplitPane>
             <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
