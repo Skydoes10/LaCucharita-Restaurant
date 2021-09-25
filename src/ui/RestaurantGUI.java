@@ -2,6 +2,8 @@ package ui;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,9 +20,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Dish;
@@ -47,6 +51,12 @@ public class RestaurantGUI {
 
     @FXML
     private AnchorPane optionsPane;
+    
+    // Options Employee
+    @FXML
+    private AnchorPane apOptionsEmp;
+
+    
 	
 	// Login Employee
 	@FXML
@@ -96,6 +106,87 @@ public class RestaurantGUI {
 
     @FXML
     private TextField tfUnitIngr;
+    
+    // Add Menu
+    @FXML
+    private TextField tfNameMenu;
+
+    @FXML
+    private TextField tfNameDishMenu;
+    
+    // Add Dish
+    @FXML
+    private GridPane gpAddPane;
+    
+    @FXML
+    private TextField tfNameDish;
+
+    @FXML
+    private Button btnAddDish;
+
+    @FXML
+    private TextField tfPriceDish;
+    
+    @FXML
+    private TextField tfAmountIng;
+
+    @FXML
+    private ComboBox<String> cbIngredients;
+
+    @FXML
+    private ComboBox<String> cbIngredients1;
+
+    @FXML
+    private ComboBox<String> cbIngredients2;
+
+    @FXML
+    private ComboBox<String> cbIngredients3;
+
+    @FXML
+    private ComboBox<String> cbIngredients4;
+
+    @FXML
+    private ComboBox<String> cbIngredients5;
+
+    @FXML
+    private ComboBox<String> cbIngredients6;
+
+    @FXML
+    private ComboBox<String> cbIngredients7;
+
+    @FXML
+    private ComboBox<String> cbIngredients8;
+
+    @FXML
+    private ComboBox<String> cbIngredients9;
+
+    @FXML
+    private TextField tfAmountIng1;
+
+    @FXML
+    private TextField tfAmountIng2;
+
+    @FXML
+    private TextField tfAmountIng3;
+
+    @FXML
+    private TextField tfAmountIng4;
+
+    @FXML
+    private TextField tfAmountIng5;
+
+    @FXML
+    private TextField tfAmountIng6;
+
+    @FXML
+    private TextField tfAmountIng7;
+
+    @FXML
+    private TextField tfAmountIng8;
+
+    @FXML
+    private TextField tfAmountIng9;
+
     
     
     
@@ -156,6 +247,9 @@ public class RestaurantGUI {
     private TableColumn<Order, String> tcDateOrder;
 	
 	private Restaurant restaurant;
+	
+	private List<String> dishes = new ArrayList<>();
+	private List<Double> amounts = new ArrayList<>();
 	
 	public RestaurantGUI(Restaurant rt) {
 		 restaurant = rt;    	
@@ -276,6 +370,113 @@ public class RestaurantGUI {
 		}
     }
 	
+	// Dish
+	private void addIngtoComboBox(ComboBox<String> x){
+        for(int i=0;i<restaurant.getIngredients().size();i++){
+        	x.getItems().add(restaurant.getIngredients().get(i).getName());
+        }
+    }
+	
+	private void addToList() {
+		if(!(cbIngredients.getValue().equals("") && tfAmountIng.getText().equals(""))) {
+			dishes.add(cbIngredients.getValue());
+			double amount = Double.parseDouble(tfAmountIng.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients1.getValue().equals("") && tfAmountIng1.getText().equals(""))) {
+			dishes.add(cbIngredients1.getValue());
+			double amount = Double.parseDouble(tfAmountIng1.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients2.getValue().equals("") && tfAmountIng2.getText().equals(""))) {
+			dishes.add(cbIngredients2.getValue());
+			double amount = Double.parseDouble(tfAmountIng2.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients3.getValue().equals("") && tfAmountIng3.getText().equals(""))) {
+			dishes.add(cbIngredients3.getValue());
+			double amount = Double.parseDouble(tfAmountIng3.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients4.getValue().equals("") && tfAmountIng4.getText().equals(""))) {
+			dishes.add(cbIngredients4.getValue());
+			double amount = Double.parseDouble(tfAmountIng4.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients5.getValue().equals("") && tfAmountIng5.getText().equals(""))) {
+			dishes.add(cbIngredients5.getValue());
+			double amount = Double.parseDouble(tfAmountIng5.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients6.getValue().equals("") && tfAmountIng6.getText().equals(""))) {
+			dishes.add(cbIngredients6.getValue());
+			double amount = Double.parseDouble(tfAmountIng6.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients7.getValue().equals("") && tfAmountIng7.getText().equals(""))) {
+			dishes.add(cbIngredients7.getValue());
+			double amount = Double.parseDouble(tfAmountIng7.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients8.getValue().equals("") && tfAmountIng8.getText().equals(""))) {
+			dishes.add(cbIngredients8.getValue());
+			double amount = Double.parseDouble(tfAmountIng8.getText());
+			amounts.add(amount);
+		}
+		if(!(cbIngredients9.getValue().equals("") && tfAmountIng9.getText().equals(""))) {
+			dishes.add(cbIngredients9.getValue());
+			double amount = Double.parseDouble(tfAmountIng9.getText());
+			amounts.add(amount);
+		}
+	}
+	
+	@FXML
+	private void AddIngredientToMenu(ActionEvent event) throws FileNotFoundException, IOException {
+		addIngtoComboBox(cbIngredients);
+		addIngtoComboBox(cbIngredients1);
+		addIngtoComboBox(cbIngredients2);
+		addIngtoComboBox(cbIngredients3);
+		addIngtoComboBox(cbIngredients4);
+		addIngtoComboBox(cbIngredients5);
+		addIngtoComboBox(cbIngredients6);
+		addIngtoComboBox(cbIngredients7);
+		addIngtoComboBox(cbIngredients8);
+		addIngtoComboBox(cbIngredients9);
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Añadir platillo");
+		if(!(tfNameDish.getText().equals("") || tfPriceDish.getText().equals("") || cbIngredients.getValue().equals("") || tfAmountIng.getText().equals(""))) {
+			if(restaurant.getDishes().isEmpty()){
+				int price = Integer.parseInt(tfPriceDish.getText());
+				addToList();
+				restaurant.addDish(tfNameDish.getText(), dishes, amounts, price);
+				alert.setContentText("Platillo añadido exitosamente");
+				alert.showAndWait();
+				
+				Stage stage2 = (Stage) this.btnAddDish.getScene().getWindow();
+		        stage2.close();
+			}else {
+				if(restaurant.findDish(tfNameDish.getText()) != null) {
+					alert.setContentText("El platillo ya habia sido añadido antes");
+					alert.showAndWait();
+				}else {
+					int price = Integer.parseInt(tfPriceDish.getText());
+					addToList();
+					restaurant.addDish(tfNameDish.getText(), dishes, amounts, price);
+					alert.setContentText("Platillo añadido exitosamente");
+					alert.showAndWait();
+					
+					Stage stage2 = (Stage) this.btnAddDish.getScene().getWindow();
+			        stage2.close();
+				}
+			}
+		}else {
+			alert.setContentText("Por favor llene todos los campos");
+			alert.showAndWait();
+		}
+    }
+
+	
 	// View Info
 	@FXML
 	private void viewEmployeeInfo(ActionEvent event) throws IOException {
@@ -284,6 +485,13 @@ public class RestaurantGUI {
     	Parent EmpListPane = fxmlLoader.load();
     
     	viewListPane.setCenter(EmpListPane);
+		initializeTableViewEmployee();
+		
+		FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("optionsEmp.fxml"));
+    	fxmlLoader1.setController(this);
+    	Parent EmpListPane1 = fxmlLoader1.load();
+    
+    	viewListPane.setCenter(EmpListPane1);
 		initializeTableViewEmployee();
     }
 

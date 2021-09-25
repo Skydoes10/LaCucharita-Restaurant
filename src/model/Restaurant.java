@@ -103,8 +103,8 @@ public class Restaurant {
 	}
 	
 	// Dish
-	public void addDish(String name, int price) throws FileNotFoundException, IOException {
-		Dish dish = new Dish(name, price);
+	public void addDish(String name, List<String> ingredients, List<Double> amounts, int price) throws FileNotFoundException, IOException {
+		Dish dish = new Dish(name, ingredients, amounts, price);
 		dishes.add(dish);
 		sortByNameDish();
 		saveDish();

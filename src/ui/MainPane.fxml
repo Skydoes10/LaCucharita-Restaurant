@@ -79,7 +79,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Button>
-                        <Button layoutX="14.0" layoutY="126.0" mnemonicParsing="false" onAction="#viewMenuInfo" prefHeight="44.0" prefWidth="195.0" style="-fx-background-color: #36a1ff;" text="CARTA" textFill="WHITE">
+                        <Button layoutX="15.0" layoutY="127.0" mnemonicParsing="false" onAction="#viewMenuInfo" prefHeight="44.0" prefWidth="195.0" style="-fx-background-color: #36a1ff;" text="CARTA" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
