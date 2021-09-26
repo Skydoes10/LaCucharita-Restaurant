@@ -2,36 +2,44 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="304.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="41.0" layoutY="21.0" text="CAMBIAR ESTADO DEL PEDIDO">
+      <Label layoutX="161.0" layoutY="22.0" text="CAMBIAR ESTADO DEL PEDIDO">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="tfChangeStatus" layoutX="97.0" layoutY="69.0" prefHeight="25.0" prefWidth="44.0" />
-      <VBox layoutX="163.0" layoutY="65.0" prefHeight="58.0" prefWidth="100.0">
+      <TextField fx:id="tfChangeStatus" layoutX="369.0" layoutY="69.0" prefHeight="25.0" prefWidth="44.0" />
+      <VBox layoutX="427.0" layoutY="65.0" prefHeight="58.0" prefWidth="100.0">
          <children>
             <Label opacity="0.7" prefHeight="17.0" prefWidth="95.0" text="1 - SOLICITADO  " wrapText="true" />
             <Label opacity="0.7" text="2 - EN PROCESO" wrapText="true" />
             <Label opacity="0.7" text="3 - ENTREGADO" wrapText="true" />
          </children>
       </VBox>
-      <Label layoutX="41.0" layoutY="72.0" text="Opción:">
+      <Label layoutX="313.0" layoutY="72.0" text="Opción:">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Button fx:id="btnChangeStatus" layoutX="110.0" layoutY="142.0" mnemonicParsing="false" onAction="#changeStatus" style="-fx-background-color: #36a1ff;" text="CAMBIAR" textFill="WHITE">
+      <Button fx:id="btnChangeStatus" layoutX="442.0" layoutY="290.0" mnemonicParsing="false" onAction="#changeStatus" style="-fx-background-color: #36a1ff;" text="CAMBIAR" textFill="WHITE">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
+      <TableView fx:id="tvChangeStatus" layoutX="14.0" layoutY="65.0" prefHeight="266.0" prefWidth="278.0">
+        <columns>
+          <TableColumn fx:id="tcCodeChangeStatus" prefWidth="184.0" text="Código" />
+          <TableColumn fx:id="tcStatusChangeStatus" prefWidth="93.0" text="Estado" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

@@ -63,14 +63,13 @@ public class Restaurant {
 		for(int i=0; i<employees.size(); i++) {
 			if(employees.get(i).getNumID().equals(numID)) {
 				employee = employees.get(i);
-//				deleteEmployee(employees.get(i));
 			}
 		}
 		return employee;
 	}
 	
-	public void changePassword(String newPw) {
-		
+	public void changePassword(Employee e, String newPw) {
+		e.setPassword(newPw);
 	}
 	
 	// Ingredient
@@ -92,14 +91,13 @@ public class Restaurant {
 		for(int i=0; i<ingredients.size(); i++) {
 			if(ingredients.get(i).getName().equals(name)) {
 				ingredient = ingredients.get(i);
-//				deleteIngredient(ingredients.get(i));
 			}
 		}
 		return ingredient;
 	}
 	
-	public void changeAmount(boolean newAmount) {
-		
+	public void changeAmount(Ingredient i, double newAmount) {
+		i.setAmount(newAmount);
 	}
 	
 	// Dish
@@ -121,7 +119,6 @@ public class Restaurant {
 		for(int i=0; i<dishes.size(); i++) {
 			if(dishes.get(i).getName().equals(name)) {
 				dish = dishes.get(i);
-//				deleteDish(dishes.get(i));
 			}
 		}
 		return dish;
@@ -152,11 +149,11 @@ public class Restaurant {
 	
 	public void changeStatus(Order o, int newStatus) {
 		if(newStatus == 1) {
-			o.setStatus(null);
+			o.setStatus(StatusDish.SOLICITADO);
 		}else if(newStatus == 2) {
-			o.setStatus(null);
-		}else {
-			o.setStatus(null);
+			o.setStatus(StatusDish.EN_PROCESO);
+		}else if(newStatus == 3){
+			o.setStatus(StatusDish.ENTREGADO);
 		}
 	}
 	

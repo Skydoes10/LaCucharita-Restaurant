@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -56,6 +57,13 @@ public class RestaurantGUI {
 
     @FXML
     private BorderPane optionsPane;
+    
+    @FXML
+    private Label lbNameUser;
+
+    @FXML
+    private Label lbIdUser;
+    
     
     // Options Employee
     @FXML
@@ -114,6 +122,9 @@ public class RestaurantGUI {
     @FXML
     private PasswordField pfChangePassOld;
     
+    @FXML
+    private Button btnChangePass;
+    
     
     
     // Add Ingredient
@@ -138,6 +149,23 @@ public class RestaurantGUI {
 
     @FXML
     private Button btnDeleteIng;
+    
+    // Change Amount
+    @FXML
+    private TextField tfChangeAmount;
+
+    @FXML
+    private Button btnChangeAmount;
+
+    @FXML
+    private TableView<Ingredient> tvChangeAmount;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcIngChangeAmonut;
+
+    @FXML
+    private TableColumn<Ingredient, String> tcAmountChangeAmount;
+
     
     
     // Add Dish
@@ -251,6 +279,14 @@ public class RestaurantGUI {
     @FXML
     private Button btnChangeStatus;
     
+    @FXML
+    private TableView<Order> tvChangeStatus;
+
+    @FXML
+    private TableColumn<Order, String> tcCodeChangeStatus;
+
+    @FXML
+    private TableColumn<Order, String> tcStatusChangeStatus;
 	
     
     
@@ -313,7 +349,8 @@ public class RestaurantGUI {
 	
 	private List<String> ingredients = new ArrayList<>();
 	private List<Double> amounts = new ArrayList<>();
-	private int TotalPrice = 0;
+	private int totalPrice = 0;
+	private String dishToOrder = "";
 	
 	public RestaurantGUI(Restaurant rt) {
 		 restaurant = rt;
@@ -337,6 +374,8 @@ public class RestaurantGUI {
 	        stage.setTitle("La Cucharita");
 	        stage.setScene(new Scene(mainPane));  
 	        stage.show();
+	        lbNameUser.setText(restaurant.findEmployee(tfIDEmployee.getText()).getName());
+	        lbIdUser.setText(restaurant.findEmployee(tfIDEmployee.getText()).getNumID());
 			}else {
 			alert.setContentText("Usuario no registrado");
 			alert.showAndWait();
@@ -404,7 +443,8 @@ public class RestaurantGUI {
 		        stage.setTitle("La Cucharita");
 		        stage.setScene(new Scene(mainPane));  
 		        stage.show();
-		        
+		        lbNameUser.setText(restaurant.findEmployee(tfIDEmployee.getText()).getName());
+		        lbIdUser.setText(restaurant.findEmployee(tfIDEmployee.getText()).getNumID());
 			}else {
 				if(restaurant.findEmployee(tfIDEmployee.getText()) != null) {
 					alert.setContentText("El empleado ya habia sido registrado antes");
@@ -416,16 +456,6 @@ public class RestaurantGUI {
 					
 					Stage stage2 = (Stage) this.btnRegister.getScene().getWindow();
 			        stage2.close();
-					
-//					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPane.fxml"));
-//					fxmlLoader.setController(this);
-//					Parent mainPane = fxmlLoader.load();
-//
-//					Stage stage = new Stage();
-//			        stage.setTitle("La Cucharita");
-//			        stage.setScene(new Scene(mainPane));  
-//			        stage.show();
-			        
 				}
 			}
 		}else {
@@ -435,8 +465,28 @@ public class RestaurantGUI {
     }
 	
 	@FXML
+	private void openChangePass(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ChangePass.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+	
+	@FXML
     private void changePassword(ActionEvent event) {
-		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Cambiar contraseña");
+		if(restaurant.findEmployee(lbIdUser.getText()).getPassword().equals(pfChangePassOld.getText())) {
+			restaurant.changePassword(restaurant.findEmployee(lbIdUser.getText()), pfChangePassNew.getText());
+			alert.setContentText("Contraseña cambiada exitosamente");
+			alert.showAndWait();
+			
+			Stage stage2 = (Stage) this.btnChangePass.getScene().getWindow();
+	        stage2.close();
+		}
     }
 	
 	// Ingredient
@@ -460,6 +510,18 @@ public class RestaurantGUI {
 		Stage stage = new Stage();
         stage.setScene(new Scene(mainPane));  
         stage.show();
+    }
+    
+    @FXML
+    private void openChangeAmount(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ChangeAmount.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+        initializeTableViewChangeAmount();
     }
     
     @FXML
@@ -510,6 +572,24 @@ public class RestaurantGUI {
 			alert.setContentText("Por favor llene todos los campos");
 			alert.showAndWait();
 		}
+    }
+	
+	@FXML
+	private void changeAmount(ActionEvent event) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Cambiar cantidad");
+    	try {
+    		double newAmount = Double.parseDouble(tfChangeAmount.getText());
+        	Ingredient ingSelected = tvChangeAmount.getSelectionModel().getSelectedItem();
+        	restaurant.changeAmount(ingSelected, newAmount);
+        	alert.setContentText("Cantidad del Ingrediente modificada exitosamente");
+			alert.showAndWait();
+        	Stage stage2 = (Stage) this.btnChangeAmount.getScene().getWindow();
+            stage2.close();
+    	}catch(NullPointerException npe) {
+    		alert.setContentText("Ingrediente no seleccionado");
+			alert.showAndWait();
+    	}
     }
 	
 	// Dish
@@ -694,6 +774,7 @@ public class RestaurantGUI {
 		Stage stage = new Stage();
         stage.setScene(new Scene(mainPane));  
         stage.show();
+        initializeTableViewChangeStatus();
     }
 
 	@FXML
@@ -731,18 +812,22 @@ public class RestaurantGUI {
         initializeTableViewSelectDishes();
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10);
         spAmountDish.setValueFactory(valueFactory);
+        totalPrice = 0;
+        dishToOrder = "";
     }
 	
     @FXML
     private void addSelectedDishToOrder(ActionEvent event) {
     	try {
+    		
     		Dish dishSelected = tvSelectDishes.getSelectionModel().getSelectedItem();
     		String nameDish = dishSelected.getName();
     		int priceDish = dishSelected.getPrice();
         	String amountDish = String.valueOf(spAmountDish.getValue());
-        	taSelectedDishes.setText(nameDish + " - " + amountDish +"\n");
-        	TotalPrice += priceDish * spAmountDish.getValue();
-        	String totalPriceString = String.valueOf(TotalPrice);
+        	dishToOrder += nameDish + " - " + amountDish +"\n";
+        	taSelectedDishes.setText(dishToOrder);
+        	totalPrice += priceDish * spAmountDish.getValue();
+        	String totalPriceString = String.valueOf(totalPrice);
         	btnTotalPrice.setText("$" + totalPriceString);
     	}catch(NullPointerException npe){
     		Alert alert = new Alert(AlertType.INFORMATION);
@@ -754,8 +839,20 @@ public class RestaurantGUI {
 
     @FXML
     private void changeStatus(ActionEvent event) {
-    	int status = Integer.parseInt(tfChangeStatus.getText());
-    	restaurant.changeStatus(null, status);
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Cambiar estado");
+    	try {
+    		int status = Integer.parseInt(tfChangeStatus.getText());
+        	Order orderSelected = tvChangeStatus.getSelectionModel().getSelectedItem();
+        	restaurant.changeStatus(orderSelected, status);
+        	alert.setContentText("Estado de la orden modificado exitosamente");
+			alert.showAndWait();
+        	Stage stage2 = (Stage) this.btnChangeStatus.getScene().getWindow();
+            stage2.close();
+    	}catch(NullPointerException npe) {
+    		alert.setContentText("Orden no seleccionada");
+			alert.showAndWait();
+    	}
     }
 	
 	// View Info
@@ -874,4 +971,21 @@ public class RestaurantGUI {
    		tcPriceOfDish.setCellValueFactory(new PropertyValueFactory<Dish,String>("price"));
 	}
 	
+	private void initializeTableViewChangeStatus() {
+		ObservableList<Order> observableList;
+   		observableList = FXCollections.observableArrayList(restaurant.getOrders());
+   	
+   		tvChangeStatus.setItems(observableList);
+   		tcCodeChangeStatus.setCellValueFactory(new PropertyValueFactory<Order,String>("code"));
+   		tcStatusChangeStatus.setCellValueFactory(new PropertyValueFactory<Order,String>("status"));
+	}
+	
+	private void initializeTableViewChangeAmount() {
+		ObservableList<Ingredient> observableList;
+   		observableList = FXCollections.observableArrayList(restaurant.getIngredients());
+   	
+   		tvChangeAmount.setItems(observableList);
+   		tcIngChangeAmonut.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("name"));
+   		tcAmountChangeAmount.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("amount"));
+	}
 }
