@@ -2,8 +2,11 @@ package ui;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,8 +18,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -34,7 +40,6 @@ import model.Order;
 import model.Restaurant;
 
 public class RestaurantGUI {
-	
 	
 	// MainPane
 	@FXML
@@ -60,11 +65,15 @@ public class RestaurantGUI {
     @FXML
     private AnchorPane apOptionsing;
     
-	// Options Dish
-    
+	// Options Menu
+    @FXML
+    private AnchorPane apOptionsMenu;
+
     // Options Order
+    @FXML
+    private AnchorPane apOptionsOrder;
+
     
-	
 	// Login Employee
 	@FXML
     private TextField tfIDLoginEmp;
@@ -130,12 +139,6 @@ public class RestaurantGUI {
     @FXML
     private Button btnDeleteIng;
     
-    // Add Menu
-    @FXML
-    private TextField tfNameMenu;
-
-    @FXML
-    private TextField tfNameDishMenu;
     
     // Add Dish
     @FXML
@@ -210,10 +213,47 @@ public class RestaurantGUI {
     @FXML
     private TextField tfAmountIng9;
 
+    // Delete Dish
+    @FXML
+    private TextField tfNameDishDelete;
+
+    @FXML
+    private Button btnDeleteDish;
     
     
+    // Add Order
+    @FXML
+    private TextArea taSelectedDishes;
+
+    @FXML
+    private TextField btnTotalPrice;
+
+    @FXML
+    private Button btnAddOrder;
+    
+    // Select Dishes
+    @FXML
+    private TableView<Dish> tvSelectDishes;
+
+    @FXML
+    private TableColumn<Dish, String> tcDish;
+
+    @FXML
+    private TableColumn<Dish, String> tcPriceOfDish;
+    
+    @FXML
+    private Spinner<Integer> spAmountDish;
+    
+    // Change Status
+    @FXML
+    private TextField tfChangeStatus;
+
+    @FXML
+    private Button btnChangeStatus;
     
 	
+    
+    
 	// TableView Employee
 	@FXML
     private TableView<Employee> tvEmployee;
@@ -271,11 +311,12 @@ public class RestaurantGUI {
 	
 	private Restaurant restaurant;
 	
-	private List<String> dishes = new ArrayList<>();
+	private List<String> ingredients = new ArrayList<>();
 	private List<Double> amounts = new ArrayList<>();
+	private int TotalPrice = 0;
 	
 	public RestaurantGUI(Restaurant rt) {
-		 restaurant = rt;    	
+		 restaurant = rt;
 	}
 	
 	// Employee
@@ -472,68 +513,17 @@ public class RestaurantGUI {
     }
 	
 	// Dish
-	private void addIngtoComboBox(ComboBox<String> x){
-        for(int i=0;i<restaurant.getIngredients().size();i++){
-        	x.getItems().add(restaurant.getIngredients().get(i).getName());
-        }
-    }
-	
-	private void addToList() {
-		if(!(cbIngredients.getValue().equals("") && tfAmountIng.getText().equals(""))) {
-			dishes.add(cbIngredients.getValue());
-			double amount = Double.parseDouble(tfAmountIng.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients1.getValue().equals("") && tfAmountIng1.getText().equals(""))) {
-			dishes.add(cbIngredients1.getValue());
-			double amount = Double.parseDouble(tfAmountIng1.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients2.getValue().equals("") && tfAmountIng2.getText().equals(""))) {
-			dishes.add(cbIngredients2.getValue());
-			double amount = Double.parseDouble(tfAmountIng2.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients3.getValue().equals("") && tfAmountIng3.getText().equals(""))) {
-			dishes.add(cbIngredients3.getValue());
-			double amount = Double.parseDouble(tfAmountIng3.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients4.getValue().equals("") && tfAmountIng4.getText().equals(""))) {
-			dishes.add(cbIngredients4.getValue());
-			double amount = Double.parseDouble(tfAmountIng4.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients5.getValue().equals("") && tfAmountIng5.getText().equals(""))) {
-			dishes.add(cbIngredients5.getValue());
-			double amount = Double.parseDouble(tfAmountIng5.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients6.getValue().equals("") && tfAmountIng6.getText().equals(""))) {
-			dishes.add(cbIngredients6.getValue());
-			double amount = Double.parseDouble(tfAmountIng6.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients7.getValue().equals("") && tfAmountIng7.getText().equals(""))) {
-			dishes.add(cbIngredients7.getValue());
-			double amount = Double.parseDouble(tfAmountIng7.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients8.getValue().equals("") && tfAmountIng8.getText().equals(""))) {
-			dishes.add(cbIngredients8.getValue());
-			double amount = Double.parseDouble(tfAmountIng8.getText());
-			amounts.add(amount);
-		}
-		if(!(cbIngredients9.getValue().equals("") && tfAmountIng9.getText().equals(""))) {
-			dishes.add(cbIngredients9.getValue());
-			double amount = Double.parseDouble(tfAmountIng9.getText());
-			amounts.add(amount);
-		}
-	}
-	
 	@FXML
-	private void AddIngredientToMenu(ActionEvent event) throws FileNotFoundException, IOException {
-		addIngtoComboBox(cbIngredients);
+	private void addNewDish(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddDish.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+        
+        addIngtoComboBox(cbIngredients);
 		addIngtoComboBox(cbIngredients1);
 		addIngtoComboBox(cbIngredients2);
 		addIngtoComboBox(cbIngredients3);
@@ -543,14 +533,113 @@ public class RestaurantGUI {
 		addIngtoComboBox(cbIngredients7);
 		addIngtoComboBox(cbIngredients8);
 		addIngtoComboBox(cbIngredients9);
-		
+    }
+
+    @FXML
+    private void deleteDish(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("deleteDish.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+    
+    @FXML
+    private void deleteDishFromMenu(ActionEvent event) throws FileNotFoundException, IOException {
+    	Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Eliminar platillo");
+    	if(restaurant.findDish(tfNameDishDelete.getText()) != null) {
+    		restaurant.deleteDish(restaurant.findDish(tfNameDishDelete.getText()));
+    		alert.setContentText("Platillo eliminado exitosamente");
+			alert.showAndWait();
+			
+			Stage stage2 = (Stage) this.btnDeleteDish.getScene().getWindow();
+	        stage2.close();
+    	}else {
+    		alert.setContentText("Platillo no encontrado");
+			alert.showAndWait();
+    	}
+    }
+	
+	private void addIngtoComboBox(ComboBox<String> x){
+        for(int i=0;i<restaurant.getIngredients().size();i++){
+        	x.getItems().add(restaurant.getIngredients().get(i).getName());
+        }
+    }
+	
+	private void addToList() {
+		if(cbIngredients.getValue() != null && !(cbIngredients.getValue().toString().isEmpty() && tfAmountIng.getText().equals(""))) {
+			ingredients.add(cbIngredients.getValue());
+			double amount = Double.parseDouble(tfAmountIng.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients1.getValue() != null && !(cbIngredients1.getValue().toString().isEmpty() && tfAmountIng1.getText().equals(""))) {
+			ingredients.add(cbIngredients1.getValue());
+			double amount = Double.parseDouble(tfAmountIng1.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients2.getValue() != null && !(cbIngredients2.getValue().toString().isEmpty() && tfAmountIng2.getText().equals(""))) {
+			ingredients.add(cbIngredients2.getValue());
+			double amount = Double.parseDouble(tfAmountIng2.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients3.getValue() != null && !(cbIngredients3.getValue().toString().isEmpty() && tfAmountIng3.getText().equals(""))) {
+			ingredients.add(cbIngredients3.getValue());
+			double amount = Double.parseDouble(tfAmountIng3.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients4.getValue() != null && !(cbIngredients4.getValue().toString().isEmpty() && tfAmountIng4.getText().equals(""))) {
+			ingredients.add(cbIngredients4.getValue());
+			double amount = Double.parseDouble(tfAmountIng4.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients5.getValue() != null && !(cbIngredients5.getValue().toString().isEmpty() && tfAmountIng5.getText().equals(""))) {
+			ingredients.add(cbIngredients5.getValue());
+			double amount = Double.parseDouble(tfAmountIng5.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients6.getValue() != null && !(cbIngredients6.getValue().toString().isEmpty() && tfAmountIng6.getText().equals(""))) {
+			ingredients.add(cbIngredients6.getValue());
+			double amount = Double.parseDouble(tfAmountIng6.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients7.getValue() != null && !(cbIngredients7.getValue().toString().isEmpty() && tfAmountIng7.getText().equals(""))) {
+			ingredients.add(cbIngredients7.getValue());
+			double amount = Double.parseDouble(tfAmountIng7.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients8.getValue() != null && !(cbIngredients8.getValue().toString().isEmpty() && tfAmountIng8.getText().equals(""))) {
+			ingredients.add(cbIngredients8.getValue());
+			double amount = Double.parseDouble(tfAmountIng8.getText());
+			amounts.add(amount);
+		}
+		if(cbIngredients9.getValue() != null && !(cbIngredients9.getValue().toString().isEmpty() && tfAmountIng9.getText().equals(""))) {
+			ingredients.add(cbIngredients9.getValue());
+			double amount = Double.parseDouble(tfAmountIng9.getText());
+			amounts.add(amount);
+		}
+	}
+	
+	private String listToString(){
+		String s = "";
+        for(int i=0;i<ingredients.size();i++){
+        	s += ingredients.get(i).toString() + " ";
+        }
+        return s;
+    }
+	
+	@FXML
+	private void AddIngredientToMenu(ActionEvent event) throws FileNotFoundException, IOException {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Añadir platillo");
 		if(!(tfNameDish.getText().equals("") || tfPriceDish.getText().equals("") || cbIngredients.getValue().equals("") || tfAmountIng.getText().equals(""))) {
 			if(restaurant.getDishes().isEmpty()){
 				int price = Integer.parseInt(tfPriceDish.getText());
 				addToList();
-				restaurant.addDish(tfNameDish.getText(), dishes, amounts, price);
+				String ingredientsStr = listToString();
+				restaurant.addDish(tfNameDish.getText(), ingredientsStr, amounts, price);
 				alert.setContentText("Platillo añadido exitosamente");
 				alert.showAndWait();
 				
@@ -563,7 +652,8 @@ public class RestaurantGUI {
 				}else {
 					int price = Integer.parseInt(tfPriceDish.getText());
 					addToList();
-					restaurant.addDish(tfNameDish.getText(), dishes, amounts, price);
+					String ingredientsStr = listToString();
+					restaurant.addDish(tfNameDish.getText(), ingredientsStr, amounts, price);
 					alert.setContentText("Platillo añadido exitosamente");
 					alert.showAndWait();
 					
@@ -577,6 +667,96 @@ public class RestaurantGUI {
 		}
     }
 
+	// Order
+	@FXML
+	private void addNewOrder(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AddOrder.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+
+    @FXML
+    private void deleteOrder(ActionEvent event) throws IOException {
+    	Order orderSelected = tvOrdersList.getSelectionModel().getSelectedItem();
+    	restaurant.deleteOrder(orderSelected);
+    }
+	
+    @FXML
+    private void openChageStatus(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("changeStatus.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+    }
+
+	@FXML
+	private void addOrder(ActionEvent event) throws FileNotFoundException, IOException {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Añadir orden");
+		if(!(taSelectedDishes.getText().equals(""))) {
+			UUID uuid = UUID.randomUUID();
+			String uuidAsString = uuid.toString();
+			
+	        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");  
+	        LocalDateTime now = LocalDateTime.now();
+	        
+			restaurant.addOrder(uuidAsString, 1, dtf.format(now), taSelectedDishes.getText());
+			alert.setContentText("Orden añadida exitosamente");
+			alert.showAndWait();
+			
+			Stage stage2 = (Stage) this.btnAddOrder.getScene().getWindow();
+		    stage2.close();
+		}else {
+			alert.setContentText("Por favor llene todos los campos");
+			alert.showAndWait();
+		}
+    }
+
+    @FXML
+    private void openSelectDishes(ActionEvent event) throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SelectDishes.fxml"));
+		fxmlLoader.setController(this);
+		Parent mainPane = fxmlLoader.load();
+
+		Stage stage = new Stage();
+        stage.setScene(new Scene(mainPane));  
+        stage.show();
+        initializeTableViewSelectDishes();
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10);
+        spAmountDish.setValueFactory(valueFactory);
+    }
+	
+    @FXML
+    private void addSelectedDishToOrder(ActionEvent event) {
+    	try {
+    		Dish dishSelected = tvSelectDishes.getSelectionModel().getSelectedItem();
+    		String nameDish = dishSelected.getName();
+    		int priceDish = dishSelected.getPrice();
+        	String amountDish = String.valueOf(spAmountDish.getValue());
+        	taSelectedDishes.setText(nameDish + " - " + amountDish +"\n");
+        	TotalPrice += priceDish * spAmountDish.getValue();
+        	String totalPriceString = String.valueOf(TotalPrice);
+        	btnTotalPrice.setText("$" + totalPriceString);
+    	}catch(NullPointerException npe){
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Error");
+    		alert.setContentText("Platillo no seleccionado");
+			alert.showAndWait();
+    	}
+    }
+
+    @FXML
+    private void changeStatus(ActionEvent event) {
+    	int status = Integer.parseInt(tfChangeStatus.getText());
+    	restaurant.changeStatus(null, status);
+    }
 	
 	// View Info
 	@FXML
@@ -618,6 +798,12 @@ public class RestaurantGUI {
     	Parent EmpListPane = fxmlLoader.load();
     
     	viewListPane.setCenter(EmpListPane);
+    	
+    	FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("optionsMenu.fxml"));
+    	fxmlLoader1.setController(this);
+    	Parent optionsEmpPane = fxmlLoader1.load();
+    
+    	optionsPane.setTop(optionsEmpPane);
     	initializeTableViewMenu();
     }
 
@@ -628,6 +814,12 @@ public class RestaurantGUI {
     	Parent EmpListPane = fxmlLoader.load();
     
     	viewListPane.setCenter(EmpListPane);
+    	
+    	FXMLLoader fxmlLoader1 = new FXMLLoader(getClass().getResource("optionsOrder.fxml"));
+    	fxmlLoader1.setController(this);
+    	Parent optionsEmpPane = fxmlLoader1.load();
+    
+    	optionsPane.setTop(optionsEmpPane);
     	initializeTableViewOrder();
     }
     
@@ -658,7 +850,7 @@ public class RestaurantGUI {
    	
    		tvMenuList.setItems(observableList);
    		tcDishName.setCellValueFactory(new PropertyValueFactory<Dish, String>("name"));
-   		tcIngredients.setCellValueFactory(new PropertyValueFactory<Dish, String>(""));
+   		tcIngredients.setCellValueFactory(new PropertyValueFactory<Dish, String>("ingredients"));
    		tcPrice.setCellValueFactory(new PropertyValueFactory<Dish, String>("price"));
 	}
 	
@@ -668,18 +860,18 @@ public class RestaurantGUI {
    	
    		tvOrdersList.setItems(observableList);
    		tcCodeOrder.setCellValueFactory(new PropertyValueFactory<Order, String>("code"));
-   		tcDishes.setCellValueFactory(new PropertyValueFactory<Order, String>(""));
+   		tcDishes.setCellValueFactory(new PropertyValueFactory<Order, String>("dishes"));
    		tcStatusDish.setCellValueFactory(new PropertyValueFactory<Order, String>("status"));
    		tcDateOrder.setCellValueFactory(new PropertyValueFactory<Order, String>("date"));
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	private void initializeTableViewSelectDishes() {
+		ObservableList<Dish> observableList;
+   		observableList = FXCollections.observableArrayList(restaurant.getDishes());
+   	
+   		tvSelectDishes.setItems(observableList);
+   		tcDish.setCellValueFactory(new PropertyValueFactory<Dish,String>("name"));
+   		tcPriceOfDish.setCellValueFactory(new PropertyValueFactory<Dish,String>("price"));
+	}
 	
 }

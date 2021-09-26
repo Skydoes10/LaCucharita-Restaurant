@@ -103,7 +103,7 @@ public class Restaurant {
 	}
 	
 	// Dish
-	public void addDish(String name, List<String> ingredients, List<Double> amounts, int price) throws FileNotFoundException, IOException {
+	public void addDish(String name, String ingredients, List<Double> amounts, int price) throws FileNotFoundException, IOException {
 		Dish dish = new Dish(name, ingredients, amounts, price);
 		dishes.add(dish);
 		sortByNameDish();
@@ -128,8 +128,9 @@ public class Restaurant {
 	}
 	
 	// Order
-	public void addOrder(String code, String status, String date) throws FileNotFoundException, IOException {
-		Order order = new Order(code, status, date);
+	public void addOrder(String code, int status, String date, String dishes) throws FileNotFoundException, IOException {
+		StatusDish statusDish = StatusDish.SOLICITADO;
+		Order order = new Order(code, statusDish, date, dishes);
 		orders.add(order);
 		saveOrder();
 	}
@@ -149,8 +150,14 @@ public class Restaurant {
 		return order;
 	}
 	
-	public void changeStatus(String code, String newStatus) {
-		
+	public void changeStatus(Order o, int newStatus) {
+		if(newStatus == 1) {
+			o.setStatus(null);
+		}else if(newStatus == 2) {
+			o.setStatus(null);
+		}else {
+			o.setStatus(null);
+		}
 	}
 	
 	// Serialization Employee

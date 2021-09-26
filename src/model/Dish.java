@@ -7,14 +7,14 @@ import java.util.List;
 public class Dish implements Serializable, Comparable<Dish>{
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private List<String> ingredients;
+	private String ingredients;
 	private List<Double> amounts;
 	private int price;
 	
-	public Dish(String name, List<String> ingredients, List<Double> amounts, int price) {
+	public Dish(String name, String ingredients, List<Double> amounts, int price) {
 		this.name = name;
-		ingredients = new ArrayList<>();
-		amounts = new ArrayList<>();
+		this.ingredients = ingredients;
+		amounts = new ArrayList<Double>();
 		this.price = price;
 	}
 
@@ -22,7 +22,7 @@ public class Dish implements Serializable, Comparable<Dish>{
 		return name;
 	}
 
-	public List<String> getIngredients() {
+	public String getIngredients() {
 		return ingredients;
 	}
 
