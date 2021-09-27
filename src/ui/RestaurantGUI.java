@@ -2,9 +2,8 @@ package ui;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -88,6 +87,9 @@ public class RestaurantGUI {
 
     @FXML
     private PasswordField pfPassLoginEmp;
+    
+    @FXML
+    private Button btnLogin;
 	
 	// Register Employee
     @FXML
@@ -365,17 +367,19 @@ public class RestaurantGUI {
 			alert.setContentText("Por favor llene todos los campos");
 			alert.showAndWait();
 		}else {
-			if(restaurant.findEmployee(tfIDEmployee.getText()) != null && pfPassLoginEmp.getText().equals(restaurant.findEmployee(tfIDEmployee.getText()).getPassword())) {
+			if(restaurant.findEmployee(tfIDLoginEmp.getText()) != null && pfPassLoginEmp.getText().equals(restaurant.findEmployee(tfIDLoginEmp.getText()).getPassword())) {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MainPane.fxml"));
 			fxmlLoader.setController(this);
 			Parent mainPane = fxmlLoader.load();
 
 			Stage stage = new Stage();
 	        stage.setTitle("La Cucharita");
-	        stage.setScene(new Scene(mainPane));  
+	        stage.setScene(new Scene(mainPane));
 	        stage.show();
-	        lbNameUser.setText(restaurant.findEmployee(tfIDEmployee.getText()).getName());
-	        lbIdUser.setText(restaurant.findEmployee(tfIDEmployee.getText()).getNumID());
+	        lbNameUser.setText(restaurant.findEmployee(tfIDLoginEmp.getText()).getName());
+	        lbIdUser.setText(restaurant.findEmployee(tfIDLoginEmp.getText()).getNumID());
+	        Stage stage2 = (Stage) this.btnLogin.getScene().getWindow();
+	        stage2.close();
 			}else {
 			alert.setContentText("Usuario no registrado");
 			alert.showAndWait();
@@ -784,11 +788,9 @@ public class RestaurantGUI {
 		if(!(taSelectedDishes.getText().equals(""))) {
 			UUID uuid = UUID.randomUUID();
 			String uuidAsString = uuid.toString();
-			
-	        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");  
-	        LocalDateTime now = LocalDateTime.now();
+			Date date = new Date();
 	        
-			restaurant.addOrder(uuidAsString, 1, dtf.format(now), taSelectedDishes.getText());
+			restaurant.addOrder(uuidAsString, 1, date, taSelectedDishes.getText());
 			alert.setContentText("Orden añadida exitosamente");
 			alert.showAndWait();
 			

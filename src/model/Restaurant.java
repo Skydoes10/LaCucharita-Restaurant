@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class Restaurant {
@@ -21,11 +22,15 @@ public class Restaurant {
 	private List<Dish> dishes;
 	private List<Order> orders;
 	
-	public Restaurant() {
+	public Restaurant() throws ClassNotFoundException, IOException {
 		employees = new ArrayList<>();
 		ingredients = new ArrayList<>();
 		dishes = new ArrayList<>();
 		orders = new ArrayList<>();
+		loadEmployees();
+		loadIngredient();
+		loadDish();
+		loadOrder();
 	}
 	
 	public List<Employee> getEmployees() {
@@ -125,15 +130,17 @@ public class Restaurant {
 	}
 	
 	// Order
-	public void addOrder(String code, int status, String date, String dishes) throws FileNotFoundException, IOException {
+	public void addOrder(String code, int status, Date date, String dishes) throws FileNotFoundException, IOException {
 		StatusDish statusDish = StatusDish.SOLICITADO;
 		Order order = new Order(code, statusDish, date, dishes);
 		orders.add(order);
+		sortOrderStatus();
 		saveOrder();
 	}
 	
 	public void deleteOrder(Order o) throws FileNotFoundException, IOException {
 		orders.remove(o);
+		sortOrderStatus();
 		saveOrder();
 	}
 	
@@ -164,6 +171,7 @@ public class Restaurant {
 		oos.close();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void loadEmployees() throws IOException, ClassNotFoundException {
 		File f = new File(EMPLOYEES_FILE_NAME);
 		if(f.exists()) {
@@ -180,6 +188,7 @@ public class Restaurant {
 		oos.close();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void loadIngredient() throws IOException, ClassNotFoundException {
 		File f = new File(INGREDIENTS_FILE_NAME);
 		if(f.exists()) {
@@ -196,6 +205,7 @@ public class Restaurant {
 		oos.close();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void loadDish() throws IOException, ClassNotFoundException {
 		File f = new File(DISHES_FILE_NAME);
 		if(f.exists()) {
@@ -212,6 +222,7 @@ public class Restaurant {
 		oos.close();
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void loadOrder() throws IOException, ClassNotFoundException {
 		File f = new File(ORDERS_FILE_NAME);
 		if(f.exists()) {
@@ -249,13 +260,20 @@ public class Restaurant {
 	    }
 	}
 	
-	public void sortByNameDish() {
+	private void sortByNameDish() {
 		Collections.sort(dishes);
 	}
 	
-	//
-	// pendiente el sort de order
-	//
-	
+	private void sortOrderStatus() {
+		for (int i = 0; i < orders.size(); i++) {
+	        for (int j = 0; j < orders.size(); j++) {
+	            if(orders.get(i).getStatus().compareTo(orders.get(j).getStatus()) < 0) {
+	                Order aux = orders.get(i);
+	                orders.set(i, orders.get(j));
+	                orders.set(j, aux);
+	            }
+	        }
+	    }
+	}
 	
 }
