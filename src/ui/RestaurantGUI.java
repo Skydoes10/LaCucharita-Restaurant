@@ -821,7 +821,6 @@ public class RestaurantGUI {
     @FXML
     private void addSelectedDishToOrder(ActionEvent event) {
     	try {
-    		
     		Dish dishSelected = tvSelectDishes.getSelectionModel().getSelectedItem();
     		String nameDish = dishSelected.getName();
     		int priceDish = dishSelected.getPrice();
